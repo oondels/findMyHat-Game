@@ -1,4 +1,8 @@
-//const prompt = require("prompt-sync")({ sigint: true });
+// const prompt = require("prompt-sync")({ sigint: true });
+const readline = require("readline").createInterface({
+  input: process.stdin,
+  output: process.stdout,
+});
 
 const hat = "^";
 const hole = "O";
@@ -60,9 +64,16 @@ const newField = new Field([
   ["O", "░", "░", "░"],
 ]);
 
-const playGame = (field) => {
+const playGame = (field, key = 1) => {
   field = newField.field;
+  while (key === 1) {
+    readline.question("Where you go?", (choice) => {
+      console.log(choice);
+      readline.close();
+      // continue here
+    });
+  }
 };
 
-playGame();
 console.log(newField.print());
+playGame();
