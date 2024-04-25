@@ -1,8 +1,34 @@
 const prompt = require("prompt-sync")({ sigint: true });
 
 class Field {
-  constructor(field) {
-    this.field = field;
+  constructor(length, height, numHoles) {
+    this.numHoles = numHoles;
+    this.field = [];
+
+    // Cosntruct the field (Just the ground)
+    for (let i = 0; i < length; i++) {
+      this.field[i] = [];
+
+      for (let j = 0; j < height; j++) {
+        this.field[i][j] = "░";
+      }
+    }
+
+    // Place Player
+    this.field[0][0] = "*";
+
+    // Randomzie the Hat
+    this.field[Math.floor(Math.random() * length)][
+      Math.floor(Math.random() * height)
+    ] = "^";
+
+    // Randomize the Holes
+    for (let i = 0; i < numHoles; i++) {
+      this.field[Math.floor(Math.random() * length)][
+        Math.floor(Math.random() * height)
+      ] = "O";
+    }
+
     this.fieldInfo = {
       largura: 0,
       altura: 0,
@@ -55,16 +81,24 @@ class Field {
   }
 }
 
-const newField = new Field([
-  ["*", "░", "░", "░"],
-  ["░", "O", "░", "O"],
-  ["░", "^", "░", "O"],
-  ["O", "░", "░", "░"],
-  ["O", "░", "░", "░"],
-]);
-
 const playGame = (field, key = 0) => {
-  console.log(newField.print());
+  let lengthField = parseInt(prompt("Qual a largura do campo?"), 10);
+  let heightField = parseInt(prompt("Qual a altura do campo?"), 10);
+  let numHoles = parseInt(prompt("Qual a quantidade de buracos?"), 10);
+
+  let newField = new Field(heightField, lengthField, numHoles);
+
+  // Log the start field
+  console.log(`\n${newField.print()}`);
+
+  // Show Informations about field
+  console.log(
+    `\n\tO campo atual tem uma largura de ${
+      newField.getFieldInfo().largura
+    } e altura de ${newField.getFieldInfo().altura}`
+  );
+  console.log("\n\tEvite os Buracos e encontre seu chapéu, boa sorte!");
+
   // Get user movement
   const move = () => {
     let choice = prompt("Qual direção?");
@@ -85,7 +119,6 @@ const playGame = (field, key = 0) => {
       case coord[1] <= -1:
         console.log("Voce saiu do campo");
         return (key = 1);
-
       default:
         break;
     }
