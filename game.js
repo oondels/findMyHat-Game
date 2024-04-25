@@ -9,6 +9,7 @@ class Field {
       largura: 0,
       altura: 0,
     };
+
     this.objectsPositions = {
       hat: [],
       holes: [],
@@ -44,6 +45,8 @@ class Field {
       ] = "*";
     }
   }
+
+  mazeSolve() {}
 
   getFieldInfo() {
     this.print();
