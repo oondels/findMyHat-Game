@@ -1,18 +1,52 @@
 const prompt = require("prompt-sync")({ sigint: true });
 
 class Field {
-  constructor(field) {
-    this.field = field;
+  constructor(length, height, numHoles) {
+    this.numHoles = numHoles;
+    this.field = [];
+
     this.fieldInfo = {
       largura: 0,
       altura: 0,
     };
+
     this.objectsPositions = {
       hat: [],
       holes: [],
-      player: [0, 0],
+      player: [
+        Math.floor(Math.random() * length),
+        Math.floor(Math.random() * height),
+      ],
     };
+
+    // Cosntruct the field (Just the ground)
+    for (let i = 0; i < length; i++) {
+      this.field[i] = [];
+
+      for (let j = 0; j < height; j++) {
+        this.field[i][j] = "░";
+      }
+    }
+
+    // Randomzie the Hat
+    this.field[Math.floor(Math.random() * length)][
+      Math.floor(Math.random() * height)
+    ] = "^";
+
+    // Randomize the Holes
+    for (let i = 0; i < numHoles; i++) {
+      this.field[Math.floor(Math.random() * length)][
+        Math.floor(Math.random() * height)
+      ] = "O";
+
+      // Place Player
+      this.field[this.objectsPositions.player[0]][
+        this.objectsPositions.player[1]
+      ] = "*";
+    }
   }
+
+  mazeSolve() {}
 
   getFieldInfo() {
     this.print();
@@ -55,18 +89,26 @@ class Field {
   }
 }
 
-const newField = new Field([
-  ["*", "░", "░", "░"],
-  ["░", "O", "░", "O"],
-  ["░", "^", "░", "O"],
-  ["O", "░", "░", "░"],
-  ["O", "░", "░", "░"],
-]);
+const playGame = (key = 0) => {
+  let lengthField = parseInt(prompt("Qual a largura do campo?"), 10);
+  let heightField = parseInt(prompt("Qual a altura do campo?"), 10);
+  let numHoles = parseInt(prompt("Qual a quantidade de buracos?"), 10);
 
-const playGame = (field, key = 0) => {
-  console.log(newField.print());
-  // Get user movement
-  const move = () => {
+  let newField = new Field(heightField, lengthField, numHoles);
+
+  // Log the start field
+  console.log(`\n${newField.print()}`);
+
+  // Show Informations about field
+  console.log(
+    `\n\tO campo atual tem uma largura de ${
+      newField.getFieldInfo().largura
+    } e altura de ${newField.getFieldInfo().altura}`
+  );
+  console.log("\n\tEvite os Buracos e encontre seu chapéu, boa sorte!");
+
+  // Get user getUserChoicement
+  const getUserChoice = () => {
     let choice = prompt("Qual direção?");
     return choice;
   };
@@ -85,7 +127,6 @@ const playGame = (field, key = 0) => {
       case coord[1] <= -1:
         console.log("Voce saiu do campo");
         return (key = 1);
-
       default:
         break;
     }
@@ -105,6 +146,7 @@ const playGame = (field, key = 0) => {
   };
 
   const walk = () => {
+    // Search Hole or Hat
     findHatHole(
       newField.field[newField.getObjectsPositions().player[0]][
         newField.getObjectsPositions().player[1]
@@ -119,9 +161,9 @@ const playGame = (field, key = 0) => {
     console.log(newField.print());
   };
 
-  // Move player
+  // getUserChoice player
   while (key === 0) {
-    switch (move().toLowerCase()) {
+    switch (getUserChoice().toLowerCase()) {
       case "d":
         newField.getObjectsPositions().player[1] += 1;
         walk();
