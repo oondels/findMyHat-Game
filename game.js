@@ -5,6 +5,19 @@ class Field {
     this.numHoles = numHoles;
     this.field = [];
 
+    this.fieldInfo = {
+      largura: 0,
+      altura: 0,
+    };
+    this.objectsPositions = {
+      hat: [],
+      holes: [],
+      player: [
+        Math.floor(Math.random() * length),
+        Math.floor(Math.random() * height),
+      ],
+    };
+
     // Cosntruct the field (Just the ground)
     for (let i = 0; i < length; i++) {
       this.field[i] = [];
@@ -13,9 +26,6 @@ class Field {
         this.field[i][j] = "░";
       }
     }
-
-    // Place Player
-    this.field[0][0] = "*";
 
     // Randomzie the Hat
     this.field[Math.floor(Math.random() * length)][
@@ -27,17 +37,12 @@ class Field {
       this.field[Math.floor(Math.random() * length)][
         Math.floor(Math.random() * height)
       ] = "O";
-    }
 
-    this.fieldInfo = {
-      largura: 0,
-      altura: 0,
-    };
-    this.objectsPositions = {
-      hat: [],
-      holes: [],
-      player: [0, 0],
-    };
+      // Place Player
+      this.field[this.objectsPositions.player[0]][
+        this.objectsPositions.player[1]
+      ] = "*";
+    }
   }
 
   getFieldInfo() {
@@ -81,7 +86,7 @@ class Field {
   }
 }
 
-const playGame = (field, key = 0) => {
+const playGame = (key = 0) => {
   let lengthField = parseInt(prompt("Qual a largura do campo?"), 10);
   let heightField = parseInt(prompt("Qual a altura do campo?"), 10);
   let numHoles = parseInt(prompt("Qual a quantidade de buracos?"), 10);
