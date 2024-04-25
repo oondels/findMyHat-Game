@@ -1,13 +1,4 @@
 const prompt = require("prompt-sync")({ sigint: true });
-const readline = require("readline").createInterface({
-  input: process.stdin,
-  output: process.stdout,
-});
-
-const hat = "^";
-const hole = "O";
-const fieldCharacter = "░";
-const pathCharacter = "*";
 
 class Field {
   constructor(field) {
@@ -70,40 +61,56 @@ const newField = new Field([
   ["O", "░", "░", "░"],
 ]);
 
-const playGame = (field, key = 1) => {
+const playGame = (field, key = 0) => {
   field = newField.field;
 
   // Get user movement
   const move = () => {
-    readline.question("Where you go?", (choice) => {
-      console.log(choice);
-
-      switch (choice.toLowerCase()) {
-        case "d":
-          newField.getObjectsPositions().player[1] += 1;
-          console.log(newField.getObjectsPositions().player);
-          break;
-        case "a":
-          newField.getObjectsPositions().player[1] -= 1;
-          console.log(newField.getObjectsPositions().player);
-          break;
-        case "w":
-          newField.getObjectsPositions().player[0] += 1;
-          console.log(newField.getObjectsPositions().player);
-          break;
-        case "s":
-          newField.getObjectsPositions().player[0] -= 1;
-          console.log(newField.getObjectsPositions().player);
-          break;
-
-        default:
-          console.log("Select a real value.");
-          break;
-      }
-      readline.close();
-    });
+    let choice = prompt("Qual direção?");
+    return choice;
   };
-  move();
+
+  const loop = (coord) => {
+    switch (true) {
+      case coord[0] < newField.getFieldInfo().altura:
+        console.log("Voce saiu do campo");
+        return (key = 1);
+      case coord[0] > newField.getFieldInfo().altura:
+        console.log("Voce saiu do campo");
+        return (key = 1);
+
+      default:
+        break;
+    }
+  };
+  // Move player
+  while (key === 0) {
+    switch (move().toLowerCase()) {
+      case "d":
+        newField.getObjectsPositions().player[1] += 1;
+        console.log(newField.getObjectsPositions().player);
+
+        break;
+      case "a":
+        newField.getObjectsPositions().player[1] -= 1;
+        console.log(newField.getObjectsPositions().player);
+        break;
+      case "w":
+        newField.getObjectsPositions().player[0] -= 1;
+        console.log(newField.getObjectsPositions().player);
+        loop(newField.getObjectsPositions().player);
+        break;
+      case "s":
+        newField.getObjectsPositions().player[0] += 1;
+        console.log(newField.getObjectsPositions().player);
+        loop(newField.getFieldInfo().player);
+        break;
+
+      default:
+        console.log("Select a real value.");
+        break;
+    }
+  }
 };
 
 playGame();
