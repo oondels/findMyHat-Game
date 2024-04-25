@@ -104,8 +104,8 @@ const playGame = (key = 0) => {
   );
   console.log("\n\tEvite os Buracos e encontre seu chapéu, boa sorte!");
 
-  // Get user movement
-  const move = () => {
+  // Get user getUserChoicement
+  const getUserChoice = () => {
     let choice = prompt("Qual direção?");
     return choice;
   };
@@ -143,6 +143,7 @@ const playGame = (key = 0) => {
   };
 
   const walk = () => {
+    // Search Hole or Hat
     findHatHole(
       newField.field[newField.getObjectsPositions().player[0]][
         newField.getObjectsPositions().player[1]
@@ -157,9 +158,9 @@ const playGame = (key = 0) => {
     console.log(newField.print());
   };
 
-  // Move player
+  // getUserChoice player
   while (key === 0) {
-    switch (move().toLowerCase()) {
+    switch (getUserChoice().toLowerCase()) {
       case "d":
         newField.getObjectsPositions().player[1] += 1;
         walk();
