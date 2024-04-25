@@ -15,10 +15,12 @@ class Field {
   }
 
   getFieldInfo() {
+    this.print();
     return this.fieldInfo;
   }
 
   getObjectsPositions() {
+    this.print();
     return this.objectsPositions;
   }
 
@@ -49,7 +51,6 @@ class Field {
         }
       }
     }
-
     return joinField;
   }
 }
@@ -59,23 +60,29 @@ const newField = new Field([
   ["░", "O", "░", "O"],
   ["░", "^", "░", "O"],
   ["O", "░", "░", "░"],
+  ["O", "░", "░", "░"],
 ]);
 
 const playGame = (field, key = 0) => {
-  field = newField.field;
-
+  console.log(newField.print());
   // Get user movement
   const move = () => {
     let choice = prompt("Qual direção?");
     return choice;
   };
 
-  const loop = (coord) => {
+  const loopField = (coord) => {
     switch (true) {
-      case coord[0] < newField.getFieldInfo().altura:
+      case coord[0] <= -1:
         console.log("Voce saiu do campo");
         return (key = 1);
-      case coord[0] > newField.getFieldInfo().altura:
+      case coord[0] >= newField.getFieldInfo().altura:
+        console.log("Voce saiu do campo");
+        return (key = 1);
+      case coord[1] >= newField.getFieldInfo().largura:
+        console.log("Voce saiu do campo");
+        return (key = 1);
+      case coord[1] <= -1:
         console.log("Voce saiu do campo");
         return (key = 1);
 
@@ -83,31 +90,66 @@ const playGame = (field, key = 0) => {
         break;
     }
   };
+
+  const findHatHole = (coord) => {
+    switch (true) {
+      case coord === "O":
+        console.log("\t\tVocê caiu em um buraco!");
+        return (key = 1);
+      case coord === "^":
+        console.log("\t\tParbêns!!\n\t\tVocê achou seu chapéu!!");
+        return (key = 1);
+      default:
+        break;
+    }
+  };
+
+  const walk = () => {
+    findHatHole(
+      newField.field[newField.getObjectsPositions().player[0]][
+        newField.getObjectsPositions().player[1]
+      ]
+    );
+    // Replace ground with player postion
+    newField.field[newField.getObjectsPositions().player[0]][
+      newField.getObjectsPositions().player[1]
+    ] = "*";
+    loopField(newField.getObjectsPositions().player);
+    // Print the att Field
+    console.log(newField.print());
+  };
+
   // Move player
   while (key === 0) {
     switch (move().toLowerCase()) {
       case "d":
         newField.getObjectsPositions().player[1] += 1;
-        console.log(newField.getObjectsPositions().player);
-
+        walk();
         break;
       case "a":
         newField.getObjectsPositions().player[1] -= 1;
-        console.log(newField.getObjectsPositions().player);
+        walk();
         break;
       case "w":
         newField.getObjectsPositions().player[0] -= 1;
-        console.log(newField.getObjectsPositions().player);
-        loop(newField.getObjectsPositions().player);
+        try {
+          walk();
+        } catch (error) {
+          console.log("\t\tVocê saiu do campo");
+          key = 1;
+        }
         break;
       case "s":
         newField.getObjectsPositions().player[0] += 1;
-        console.log(newField.getObjectsPositions().player);
-        loop(newField.getFieldInfo().player);
+        try {
+          walk();
+        } catch (error) {
+          console.log("\t\tVocê saiu do campo");
+          key = 1;
+        }
         break;
-
       default:
-        console.log("Select a real value.");
+        console.log("\t\tSelect a real value.");
         break;
     }
   }
