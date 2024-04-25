@@ -28,11 +28,6 @@ class Field {
       }
     }
 
-    // Randomzie the Hat
-    this.field[Math.floor(Math.random() * length)][
-      Math.floor(Math.random() * height)
-    ] = "^";
-
     // Randomize the Holes
     for (let i = 0; i < numHoles; i++) {
       this.field[Math.floor(Math.random() * length)][
@@ -44,9 +39,25 @@ class Field {
         this.objectsPositions.player[1]
       ] = "*";
     }
+
+    // Randomzie the Hat
+    this.field[Math.floor(Math.random() * length)][
+      Math.floor(Math.random() * height)
+    ] = "^";
   }
 
-  mazeSolve() {}
+  mazeSolve(key = 0) {
+    let hatCord = [];
+    console.log(this.print());
+
+    for (let i = 0; i < this.field.length; i++) {
+      for (let j = 0; j < this.field[i].length; j++) {
+        if (this.field[i][j] === "*") {
+          hatCord = [i, j];
+        }
+      }
+    }
+  }
 
   getFieldInfo() {
     this.print();
@@ -197,4 +208,6 @@ const playGame = (key = 0) => {
   }
 };
 
+// const newField = new Field(5, 6, 5);
+// console.log(newField.mazeSolve());
 playGame();
