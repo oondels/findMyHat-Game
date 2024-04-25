@@ -11,6 +11,7 @@
   "dependencies": {
     "install": "^0.13.0",
     "npm": "^10.5.2",
+    "prompt-sync": "^4.2.0",
     "prompt-sync-history": "^1.0.1"
   },
   "devDependencies": {
