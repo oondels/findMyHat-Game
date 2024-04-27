@@ -1,7 +1,14 @@
-const mazeSolve = (mazeOrig) => {
+const testmaze = [
+  ["░","░","O","░"],
+  ["░","░","O","░"],
+  ["░","░","░","^"],
+]
+
+const mazeSolve = (origMaze) => {
   let key = 0;
-  let maze = [];
-  maze.push(mazeOrig);
+  // Clone the array
+  let maze = JSON.parse(JSON.stringify(origMaze))
+
   const resolve = (row, column) => {
     if (maze[row][column] === "^") {
       maze[row][column] = "ACHOU";

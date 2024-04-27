@@ -200,11 +200,9 @@ const playGame = (key = 0) => {
           break;
       }
     }
+  } else {
+    console.log("\nThe generated field is impossible to play!\nTry again.")
   }
 };
 
 playGame();
-
-// const newField = new Field(5, 5, 2);
-// newField.makeField();
-// console.log(mazeSolve(newField.field));
