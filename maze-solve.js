@@ -1,19 +1,13 @@
-const mazeEx = [
-  ["░", "░", "O", "░"],
-  ["░", "░", "O", "░"],
-  ["░", "░", "░", "░"],
-  ["░", "░", "O", "O"],
-  ["O", "░", "░", "H"],
-];
-
 const mazeSolve = (maze) => {
   let key = 0;
+
   const resolve = (row, column) => {
-    if (maze[row][column] === "H") {
+    if (maze[row][column] === "^") {
+      maze[row][column] = "ACHOU";
       key += 1;
     } else if (maze[row][column] === "░") {
       maze[row][column] = "*";
-      //console.log(maze);
+      // console.log(maze);
       if (column < maze[row].length - 1) {
         resolve(row, column + 1);
       }
