@@ -1,6 +1,7 @@
-const mazeSolve = (maze) => {
+const mazeSolve = (mazeOrig) => {
   let key = 0;
-
+  let maze = [];
+  maze.push(mazeOrig);
   const resolve = (row, column) => {
     if (maze[row][column] === "^") {
       maze[row][column] = "ACHOU";
