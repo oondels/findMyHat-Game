@@ -1,7 +1,10 @@
 const prompt = require("prompt-sync")({ sigint: true });
+const mazeSolve = require("./maze-solve.js");
 
 class Field {
   constructor(length, height, numHoles) {
+    this.length = length;
+    this.height = height;
     this.numHoles = numHoles;
     this.field = [];
 
@@ -18,20 +21,22 @@ class Field {
         Math.floor(Math.random() * height),
       ],
     };
+  }
 
+  makeField() {
     // Cosntruct the field (Just the ground)
-    for (let i = 0; i < length; i++) {
+    for (let i = 0; i < this.length; i++) {
       this.field[i] = [];
 
-      for (let j = 0; j < height; j++) {
+      for (let j = 0; j < this.height; j++) {
         this.field[i][j] = "░";
       }
     }
 
     // Randomize the Holes
-    for (let i = 0; i < numHoles; i++) {
-      this.field[Math.floor(Math.random() * length)][
-        Math.floor(Math.random() * height)
+    for (let i = 0; i < this.numHoles; i++) {
+      this.field[Math.floor(Math.random() * this.length)][
+        Math.floor(Math.random() * this.height)
       ] = "O";
 
       // Place Player
@@ -41,22 +46,9 @@ class Field {
     }
 
     // Randomzie the Hat
-    this.field[Math.floor(Math.random() * length)][
-      Math.floor(Math.random() * height)
+    this.field[Math.floor(Math.random() * this.length)][
+      Math.floor(Math.random() * this.height)
     ] = "^";
-  }
-
-  mazeSolve(key = 0) {
-    let hatCord = [];
-    console.log(this.print());
-
-    for (let i = 0; i < this.field.length; i++) {
-      for (let j = 0; j < this.field[i].length; j++) {
-        if (this.field[i][j] === "*") {
-          hatCord = [i, j];
-        }
-      }
-    }
   }
 
   getFieldInfo() {
@@ -71,7 +63,6 @@ class Field {
 
   print() {
     let joinField = "";
-
     for (let i = 0; i < this.field.length; i++) {
       if (i > 0) {
         joinField += "\n";
@@ -106,6 +97,7 @@ const playGame = (key = 0) => {
   let numHoles = parseInt(prompt("Qual a quantidade de buracos?"), 10);
 
   let newField = new Field(heightField, lengthField, numHoles);
+  newField.makeField();
 
   // Log the start field
   console.log(`\n${newField.print()}`);
