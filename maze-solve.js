@@ -1,7 +1,11 @@
 const testmaze = [
+  ["░","░","O","O"],
+  ["░","O","O","░"],
+  ["░","░","░","O"],
+  ["O","░","O","░"],
   ["░","░","O","░"],
-  ["░","░","O","░"],
-  ["░","░","░","^"],
+  ["O","░","░","^"],
+
 ]
 
 const mazeSolve = (origMaze) => {
@@ -15,7 +19,7 @@ const mazeSolve = (origMaze) => {
       key += 1;
     } else if (maze[row][column] === "░") {
       maze[row][column] = "*";
-      // console.log(maze);
+      console.log(maze);
       if (column < maze[row].length - 1) {
         resolve(row, column + 1);
       }

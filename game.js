@@ -61,14 +61,14 @@ class Field {
     this.print();
     return this.objectsPositions;
   }
-
+  
   print() {
     let joinField = "";
+
     for (let i = 0; i < this.field.length; i++) {
       if (i > 0) {
         joinField += "\n";
       }
-
       for (let j = 0; j < this.field[i].length; j++) {
         // Altura e Largura do campo
         this.fieldInfo.altura = this.field.length;
@@ -93,6 +93,8 @@ class Field {
 }
 
 const playGame = (key = 0) => {
+  prompt("\t\t***Find Your Hat Game***\n\tTry to get your hat in this dangeours field...\n\nPress any key to start...\n\n")
+  console.clear()
   let lengthField = parseInt(prompt("Qual a largura do campo?"), 10);
   let heightField = parseInt(prompt("Qual a altura do campo?"), 10);
   let numHoles = parseInt(prompt("Qual a quantidade de buracos?"), 10);
